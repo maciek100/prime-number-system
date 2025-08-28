@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  numbermaster:
+    build:
+      context: ./numbermaster
+      dockerfile: Dockerfile
+    container_name: numbermaster
+    ports:
+      - "8081:8081"
+    environment:
+      - SERVER_PORT=8081
+      - SPRING_PROFILES_ACTIVE=docker
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - prime-network
+
+  numbermaker:
+    build:
+      context: ./numbermaker
+      dockerfile: Dockerfile
+    container_name: numbermaker
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_PORT=8080
+      - NUMBERMASTER_URL=http://numbermaster:8081
+      - SPRING_PROFILES_ACTIVE=docker
+    #depends_on:
+     # numbermaster:
+      #  condition: service_healthy
+    networks:
+      - prime-network
+
+networks:
+  prime-network:
+    driver: bridge
