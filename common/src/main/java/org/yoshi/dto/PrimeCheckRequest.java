@@ -1,6 +1,6 @@
 package org.yoshi.dto;
 
-public record NumberRequest(
+public record PrimeCheckRequest(
         long number,
         long requestId)
 {}
