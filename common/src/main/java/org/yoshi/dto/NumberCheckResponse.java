@@ -1,6 +1,6 @@
 package org.yoshi.dto;
 
-public record PrimeCheckResponse(
+public record NumberCheckResponse(
         long number,
         long requestId,
         boolean isPrime,
